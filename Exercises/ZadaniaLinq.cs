@@ -248,15 +248,14 @@ public sealed class ZadaniaLinq
                 Nazwisko = s.Nazwisko,
                 przedmiotId = z.PrzedmiotId
             }
-            
-        );
-        var secondjoin = joined.Join(
+
+        ).Join(
             DaneUczelni.Przedmioty,
             j => j.przedmiotId,
             p => p.Id,
             (j, p) => $"{j.Imie} {j.Nazwisko}, {p.Nazwa}"
         );
-        return secondjoin;
+        return joined;
         
     }
 
@@ -272,7 +271,17 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie13_GrupowanieZapisowWedlugPrzedmiotu()
     {
-        throw Niezaimplementowano(nameof(Zadanie13_GrupowanieZapisowWedlugPrzedmiotu));
+        return DaneUczelni.Zapisy.Join(
+                DaneUczelni.Przedmioty,
+                z => z.PrzedmiotId,
+                p => p.Id,
+                (z, p) => new
+                {
+                    idZapisu = z.Id,
+                    przedmioty = p.Nazwa
+                }
+            ).GroupBy(j => j.przedmioty)
+            .Select(j => $"{j.Key} {j.Count()}");
     }
 
     /// <summary>
