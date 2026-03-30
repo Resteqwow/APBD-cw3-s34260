@@ -95,7 +95,14 @@ public sealed class ZadaniaLinq
     /// </summary>
     public IEnumerable<string> Zadanie05_CzyIstniejeNieaktywneZapisanie()
     {
-        throw Niezaimplementowano(nameof(Zadanie05_CzyIstniejeNieaktywneZapisanie));
+        var result =  DaneUczelni.Zapisy
+            .FirstOrDefault(z => z.CzyAktywny = false);
+        if (result == null)
+        {
+            return new List<string> { "nie ma nieaktywnych" };
+        }
+        return new List<string> { "jest nieaktywny" };
+        
     }
 
     /// <summary>
